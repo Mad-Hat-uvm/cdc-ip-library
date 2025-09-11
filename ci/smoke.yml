@@ -19,3 +19,10 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           python3 scripts/ai_doc_gen.py
+
+      - name: Run AI Log Summarizer
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python3 scripts/ai_log_summarizer.py
+
