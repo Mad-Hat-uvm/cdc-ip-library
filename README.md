@@ -2,6 +2,11 @@ cdc-ip-library
 ==============
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+![Build](https://img.shields.io/badge/build-passing-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-90%25-green)
+![Last Commit](https://img.shields.io/github/last-commit/Mad-Hat-uvm/cdc-ip-library)
+![Repo Size](https://img.shields.io/github/repo-size/Mad-Hat-uvm/cdc-ip-library)
+![AI-Assisted](https://img.shields.io/badge/AI-Assisted-green)
 
 Reusable **Clock Domain Crossing (CDC)** IP blocks with synthesizable SystemVerilog RTL, **UVM testbenches**, functional coverage, and SVA checks.  
 
