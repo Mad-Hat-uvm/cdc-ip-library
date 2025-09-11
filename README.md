@@ -1,6 +1,8 @@
 cdc-ip-library
 ==============
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Reusable **Clock Domain Crossing (CDC)** IP blocks with synthesizable SystemVerilog RTL, **UVM testbenches**, functional coverage, and SVA checks.  
 
 This repository is a collection of **industry-grade CDC primitives** that can be used as black-box IP in ASIC/FPGA flows and verified through both simulation and formal techniques.  
