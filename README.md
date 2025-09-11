@@ -2,6 +2,7 @@ cdc-ip-library
 ==============
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Build](https://github.com/<yourname>/cdc-ip-library/actions/workflows/smoke.yml/badge.svg)](https://github.com/<yourname>/cdc-ip-library/actions/workflows/smoke.yml)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-90%25-green)
 ![Last Commit](https://img.shields.io/github/last-commit/Mad-Hat-uvm/cdc-ip-library)
