@@ -1,4 +1,5 @@
-# cdc-ip-library
+cdc-ip-library
+==============
 
 Reusable **Clock Domain Crossing (CDC)** IP blocks with synthesizable SystemVerilog RTL, **UVM testbenches**, functional coverage, and SVA checks.  
 
@@ -6,7 +7,8 @@ This repository is a collection of **industry-grade CDC primitives** that can be
 
 ---
 
-## ✨ IP Blocks
+✨ IP Blocks
+------------
 
 | IP                     | Purpose                                         | Status      |
 |-------------------------|-------------------------------------------------|-------------|
@@ -18,8 +20,19 @@ This repository is a collection of **industry-grade CDC primitives** that can be
 
 ---
 
-## 🗂️ Repository Structure
+🗂️ Repository Structure
+------------------------
 
+ngle-bit signals | ✅ Complete |
+| `cdc_reset_sync`       | Reset deassertion synchronizer (async assert, sync deassert) | ✅ Complete |
+| `cdc_pulse_sync`       | Pulse synchronizer for narrow pulses            | 🚧 Planned  |
+| `cdc_handshake_sync`   | Req/Ack handshake synchronizer for multi-bit transfers | 🚧 Planned  |
+| `cdc_mailbox_async_fifo` | Parameterized asynchronous FIFO with Gray pointers | 🚧 Planned  |
+
+---
+
+🗂️ Repository Structure
+------------------------
 rtl/ # RTL design files
 cdc_sync_2ff.sv
 cdc_reset_sync.sv
@@ -53,7 +66,8 @@ verification_plan.md
 
 ---
 
-## 🔌 Example: 2-FF Synchronizer
+🔌 Example: 2-FF Synchronizer
+-----------------------------
 
 ```systemverilog
 module cdc_sync_2ff #(
@@ -65,27 +79,28 @@ module cdc_sync_2ff #(
   output logic q
 );
 
+Default = 2 stages (classic synchronizer)
 
-Default = 2 stages (classic synchronizer).
+Configurable stages for higher MTBF
 
-Configurable stages for higher MTBF.
-
-Synthesis attribute (* ASYNC_REG="TRUE" *) applied.
+Synthesis attribute (* ASYNC_REG="TRUE" *) applied
 
 🧪 Verification
+
 Strategy
 
-Module-level tests with randomized clock ratios.
+Module-level tests with randomized clock ratios
 
-UVM environment for multi-clock IPs (FIFO, handshake).
+UVM environment for multi-clock IPs (FIFO, handshake)
 
-Scoreboard with golden reference queue.
+Scoreboard with golden reference queue
 
-Assertions (SVA) to enforce safety properties.
+Assertions (SVA) to enforce safety properties
 
-Functional coverage across clock ratios, FIFO occupancy, resets, and pulse widths.
+Functional coverage across clock ratios, FIFO occupancy, resets, and pulse widths
 
 Assertions (examples)
+
 // No write when FIFO is full
 property no_overflow;
   @(posedge wclk) disable iff (!wrst_n) !(w_en && w_full);
@@ -97,6 +112,19 @@ property no_underflow;
   @(posedge rclk) disable iff (!rrst_n) !(r_en && r_empty);
 endproperty
 a_no_underflow: assert property(no_underflow);
+
+🤖 AI Integration
+
+AI-generated documentation: Summaries and diagrams auto-created for each CDC block
+
+Testcase generation: Use LLMs to propose additional corner cases
+
+Log summarization: Scripts that parse simulation logs and provide human-readable root causes
+
+Tutor mode: Explanations of CDC concepts in simple language for learners
+
+Badge example:
+
 
 🧭 Roadmap
 
@@ -115,6 +143,8 @@ a_no_underflow: assert property(no_underflow);
  Functional coverage closure
 
  Formal properties (SymbiYosys/Jasper)
+
+ AI integration tools (doc generation, log summarizer, testcase assistant)
 
 🚀 Quick Start
 # Clone
@@ -135,3 +165,4 @@ Cliff Cummings, “Clock Domain Crossing (CDC) Design & Verification Techniques�
 Xilinx/Intel FPGA CDC application notes
 
 UVM Class Reference Guide
+
