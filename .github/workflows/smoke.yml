@@ -29,13 +29,13 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python3 scripts/sdc/ai_doc_gen.py
+          python3 scripts/ai_doc_gen.py
 
       - name: Run AI Log Summarizer
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python3 scripts/sdc/ai_log_summarizer.py
+          python3 scripts/ai_log_summarizer.py
 
       - name: Commit AI-generated docs back
         if: github.ref == 'refs/heads/main'
