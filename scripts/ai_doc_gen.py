@@ -10,8 +10,10 @@ import os
 import datetime
 from openai import OpenAI
 
+# Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+# Paths
 rtl_dir = "rtl"
 output_file = "docs/auto_notes.md"
 
@@ -28,27 +30,31 @@ with open(output_file, "w") as f:
             with open(filepath) as src:
                 code = src.read()
 
-           prompt = f"""You are an ASIC/FPGA verification engineer.
-           Summarize the following SystemVerilog module for technical documentation.
+            # Improved prompt for engineering-quality summaries
+            prompt = f"""You are an ASIC/FPGA verification engineer.
+Summarize the following SystemVerilog module for technical documentation.
 
-           - Identify its function.
-           - Describe how the inputs/outputs behave.
-           - Mention key parameters or special reset/clock behavior.
-           - State when or why this module would be used.
+- Identify its function.
+- Describe how the inputs/outputs behave.
+- Mention key parameters or special reset/clock behavior.
+- State when or why this module would be used.
 
-           Here is the code:
-           {code}
-           """
+Here is the code:
+{code}
+"""
+
             try:
                 response = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
+                    model="gpt-4o-mini",
                     messages=[{"role": "user", "content": prompt}],
-                    max_tokens=300
+                    max_tokens=300,
+                    temperature=0.5
                 )
                 summary = response.choices[0].message.content.strip()
             except Exception as e:
-                summary = f"(AI doc generation failed: {e})"
+                summary = f"(⚠️ AI doc generation failed: {e})"
 
+            # Write to markdown
             f.write(f"## {file}\n\n{summary}\n\n")
 
 print(f"[AI Doc Gen] Wrote notes to {output_file}")
