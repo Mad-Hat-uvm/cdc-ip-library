@@ -7,9 +7,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # ✅ give Actions bot push permission
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Dummy build step
         run: |
@@ -29,19 +33,19 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python3 scripts/ai_doc_gen.py
+          python3 scripts/sdc/ai_doc_gen.py
 
       - name: Run AI Log Summarizer
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python3 scripts/ai_log_summarizer.py
+          python3 scripts/sdc/ai_log_summarizer.py
 
       - name: Commit AI-generated docs back
         if: github.ref == 'refs/heads/main'
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/auto_notes.md docs/log_summaries.md || true
           git commit -m "🤖 Update AI-generated docs [skip ci]" || echo "No changes to commit"
           git push
