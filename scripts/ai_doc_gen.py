@@ -28,8 +28,17 @@ with open(output_file, "w") as f:
             with open(filepath) as src:
                 code = src.read()
 
-            prompt = f"Explain in simple terms what this SystemVerilog module does:\n\n{code}\n\n"
+           prompt = f"""You are an ASIC/FPGA verification engineer.
+           Summarize the following SystemVerilog module for technical documentation.
 
+           - Identify its function.
+           - Describe how the inputs/outputs behave.
+           - Mention key parameters or special reset/clock behavior.
+           - State when or why this module would be used.
+
+           Here is the code:
+           {code}
+           """
             try:
                 response = client.chat.completions.create(
                     model="gpt-3.5-turbo",
