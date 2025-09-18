@@ -13,17 +13,29 @@ jobs:
 
       - name: Dummy build step
         run: |
-          echo "CDC IP Library CI: Build OK"
+          echo "CDC IP Library CI: Build OK ✅"
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install openai
 
       - name: Run AI Documentation Assistant
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python3 scripts/ai_doc_gen.py
+        run: |
+          python3 scripts/sdc/ai_doc_gen.py
 
       - name: Run AI Log Summarizer
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python3 scripts/ai_log_summarizer.py
+        run: |
+          python3 scripts/sdc/ai_log_summarizer.py
 
       - name: Commit AI-generated docs back
         if: github.ref == 'refs/heads/main'
@@ -33,4 +45,3 @@ jobs:
           git add docs/auto_notes.md docs/log_summaries.md || true
           git commit -m "🤖 Update AI-generated docs [skip ci]" || echo "No changes to commit"
           git push
-
