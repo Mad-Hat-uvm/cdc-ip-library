@@ -8,17 +8,18 @@ module cdc_sync_2ff #(
     );
 
     //synchronizer shift register
-    (* ASYNC_REG = "TRUE" *) logic [STAGES - 1 : 0] sync_reg;
+   (* ASYNC_REG = "TRUE" *) logic sync_reg0, sync_reg1;
 
-    //FF chain
-    always_ff @(posedge clock or negedge arst_n) begin
-        if (!arst_n)
-         sync_reg <= '0;
-        
-        else
-        sync_reg <= {[STAGES - 2 : 0], din};
-    end
+always_ff @(posedge clock or negedge arst_n) begin
+  if (!arst_n) begin
+    sync_reg0 <= 1'b0;
+    sync_reg1 <= 1'b0;
+  end else begin
+    sync_reg0 <= din;
+    sync_reg1 <= sync_reg0;
+  end
+end
 
-    assign dout = sync_reg[STAGES - 1];
+assign dout = sync_reg1;
 
 endmodule
