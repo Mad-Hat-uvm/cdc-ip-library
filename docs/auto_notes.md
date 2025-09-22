@@ -1,30 +1,27 @@
 # 🤖 AI-Generated Notes
 
-_Generated on 2025-09-18T18:51:42.384398 UTC_
+_Generated on 2025-09-22T02:30:10.950670 UTC_
 
 ## cdc_sync_2ff.sv
 
 ### Module Summary: `cdc_sync_2ff`
 
 #### Function:
-The `cdc_sync_2ff` module is designed to synchronize a single-bit input signal (`din`) from a source clock domain to a destination clock domain using a multi-stage flip-flop synchronizer. This helps mitigate metastability issues that can arise when transferring signals between different clock domains.
+The `cdc_sync_2ff` module serves as a clock domain crossing (CDC) synchronizer. It is designed to safely transfer a single-bit data signal (`din`) from one clock domain to another (`clock`), using a series of flip-flops to mitigate metastability issues.
 
 #### Inputs/Outputs Behavior:
 - **Inputs:**
-  - `clock`: The clock signal for the destination clock domain. The synchronization process occurs on the rising edge of this clock.
-  - `arst_n`: An active-low asynchronous reset signal. When asserted (low), it resets the internal synchronization registers.
-  - `din`: The data input signal from the source clock domain that needs to be synchronized.
+  - `clock`: The clock signal for the destination clock domain. The data is sampled on the rising edge of this clock.
+  - `arst_n`: An active-low asynchronous reset signal. When asserted (low), it resets the internal synchronization register.
+  - `din`: The single-bit data input from the source clock domain. This is the data that needs to be synchronized to the destination clock domain.
 
-- **Outputs:**
-  - `dout`: The synchronized output signal that reflects the value of `din` after passing through the specified number of flip-flop stages.
+- **Output:**
+  - `dout`: The synchronized data output, which reflects the value of `din` after passing through the specified number of flip-flop stages. The output is updated on the rising edge of the `clock`.
 
-#### Parameters and Special Reset/Clock Behavior:
+#### Parameters and Reset/Clock Behavior:
 - **Parameter:**
-  - `STAGES`: An integer parameter that defines the number of flip-flop stages used in the synchronizer. The minimum value for `STAGES` is 2 to ensure effective metastability mitigation.
+  - `STAGES`: An integer parameter that defines the number of flip-flop stages used in the synchronizer. The minimum value is set to 2 to ensure adequate synchronization.
 
 - **Reset Behavior:**
-  - The module includes an asynchronous reset (`arst_n`). When `arst_n` is low, the synchronizer registers (`sync_reg`) are cleared to zero. 
-
-- **Clock Behavior:**
-  - The synchronization process is triggered on the
+  - The module features an asynchronous reset (`arst_n`), which, when asserted low, sets the internal synchronization register (`sync_reg`) to zero
 
