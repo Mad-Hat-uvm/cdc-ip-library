@@ -1,30 +1,27 @@
 # 🤖 AI-Generated Notes
 
-_Generated on 2025-09-22T02:33:42.446082 UTC_
+_Generated on 2025-09-22T02:45:41.610862 UTC_
 
 ## cdc_sync_2ff.sv
 
 ### Module Summary: `cdc_sync_2ff`
 
 #### Function
-The `cdc_sync_2ff` module is a clock domain crossing (CDC) synchronizer designed to safely transfer a single-bit data signal (`din`) from one clock domain to another. It utilizes a series of flip-flops to minimize the risk of metastability when the data changes.
+The `cdc_sync_2ff` module is designed to synchronize a single-bit data input (`din`) from one clock domain to another using a dual flip-flop (2FF) synchronizer technique. This helps mitigate the risk of metastability when transferring data between asynchronous clock domains.
 
-#### Inputs/Outputs Behavior
+#### Inputs and Outputs
 - **Inputs:**
-  - `clock`: The clock signal for the destination clock domain, which drives the flip-flops in the synchronizer.
-  - `arst_n`: An active-low asynchronous reset signal that initializes the synchronizer.
-  - `din`: The data input signal coming from the source clock domain that needs to be synchronized.
+  - `clock`: The clock signal for the destination clock domain, which triggers the synchronization process.
+  - `arst_n`: An active-low asynchronous reset signal that resets the internal registers when asserted.
+  - `din`: The data input signal from the source clock domain that needs to be synchronized.
 
 - **Outputs:**
-  - `dout`: The synchronized output signal that reflects the value of `din` after being processed through the flip-flop chain.
+  - `dout`: The synchronized data output signal that reflects the value of `din` after being processed through the synchronization stages.
 
-#### Parameters and Special Reset/Clock Behavior
+#### Parameters and Special Behavior
 - **Parameters:**
-  - `STAGES`: An integer parameter defining the number of flip-flop stages used in the synchronizer. The minimum value is set to 2 to ensure adequate synchronization.
+  - `STAGES`: An integer parameter that specifies the number of flip-flop stages in the synchronizer. The minimum value is 2, ensuring that at least two flip-flops are used for effective synchronization.
 
-- **Reset Behavior:**
-  - The module features an asynchronous reset (`arst_n`). When `arst_n` is low, all flip-flops in the synchronizer are reset to zero.
-  
-- **Clock Behavior:**
-  - On the rising edge of the `clock`, the input `din` is shifted into the synchronizer chain,
+- **Reset/Clock Behavior:**
+  - The module features an asynchronous reset (`arst_n`). When `arst_n` is low, the internal register `sync_reg` is reset to zero. On the rising edge of `clock`, if `arst_n` is high, the module shifts the `din` value into the `sync_reg`, effectively synchron
 
