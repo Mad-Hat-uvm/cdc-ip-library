@@ -164,13 +164,10 @@ make SIM=questa TEST=smoke
 
 📜 License
 
-MIT License – free to use in academic and professional projects.
+This project is licensed under the **Business Source License (BUSL)**.  
+- ✅ Free for personal learning and non-commercial reference.  
+- ❌ Not permitted for commercial use without explicit permission.  
+- 🔒 Protected until 1 Jan 2029, after which it will convert to GPL v3.  
 
-📖 References
-
-Cliff Cummings, “Clock Domain Crossing (CDC) Design & Verification Techniques”
-
-Xilinx/Intel FPGA CDC application notes
-
-UVM Class Reference Guide
+For other uses, please contact the author (Yamini Santosh Awasthi).
 
