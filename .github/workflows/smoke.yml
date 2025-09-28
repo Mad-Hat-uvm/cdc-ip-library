@@ -1,4 +1,4 @@
-﻿name: Smoke Test with AI Doc + Log Summaries
+name: Smoke Test with AI Doc + Log Summaries
 
 on:
   push:
@@ -21,19 +21,19 @@ jobs:
           python3 -m pip install --upgrade pip
           pip install openai
 
-      # Run AI Documentation Generator (all RTL files in rtl/)
+      # Run AI Documentation Generator (process all RTL files in rtl/)
       - name: Run AI Documentation Assistant
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python3 scripts/ai_doc_gen.py
+          python3 scripts/sdc/ai_doc_gen.py
 
-      # Run AI Log Summarizer (all .log files in logs/)
+      # Run AI Log Summarizer (process all .log files in logs/)
       - name: Run AI Log Summarizer
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python3 scripts/ai_log_summarizer.py
+          python3 scripts/sdc/ai_log_summarizer.py
 
       # Commit and push AI-generated docs back
       - name: Commit AI-generated docs back
@@ -41,7 +41,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main
           git add docs/ || true
           if ! git diff --cached --quiet; then
             git commit -m "🤖 Update AI-generated docs [skip ci]"
