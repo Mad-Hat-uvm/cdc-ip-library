@@ -1,4 +1,4 @@
-name: Smoke Test with AI Doc + Log Summaries
+﻿name: Smoke Test with AI Doc + Log Summaries
 
 on:
   push:
@@ -9,36 +9,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout repo
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0   # full history so git diff works
 
-      # Install Python
       - name: Install Python deps
         run: |
           python3 -m pip install --upgrade pip
           pip install openai
 
-      # Run AI Documentation Generator (only for changed RTL files)
       - name: Run AI Documentation Assistant
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           python3 scripts/ai_doc_gen.py
 
-      # Run AI Log Summarizer (adds PASS/FAIL verdict)
       - name: Run AI Log Summarizer
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           python3 scripts/ai_log_summarizer.py
 
-      # Commit changes only if docs changed
       - name: Commit AI-generated docs back
         if: github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
           git add docs/ || true
           if ! git diff --cached --quiet; then
             git commit -m "🤖 Update AI-generated docs [skip ci]"

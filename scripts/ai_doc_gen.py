@@ -2,9 +2,8 @@
 """
 AI Documentation Generator for CDC IP Library
 ---------------------------------------------
-- Scans only RTL files changed in the latest commit (avoids redundancy).
+- Scans only RTL files changed vs origin/main (avoids redundancy).
 - Generates Markdown summaries for those files.
-- Uses the OpenAI API (v1 client).
 """
 
 import os
@@ -17,14 +16,13 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 rtl_dir = "rtl"
 output_file = "docs/auto_notes.md"
 
-# Find RTL files changed in the latest commit
+# Compare against origin/main instead of last commit
 changed_files = subprocess.getoutput(
-    "git diff --name-only HEAD~1 HEAD -- " + rtl_dir
+    f"git diff --name-only origin/main HEAD -- {rtl_dir}"
 ).splitlines()
 
 rtl_files = [f for f in changed_files if f.endswith(".sv")]
 
-# Exit early if no RTL changes
 if not rtl_files:
     print("[AI Doc Gen] No RTL changes detected. Skipping.")
     exit(0)
@@ -33,7 +31,7 @@ os.makedirs("docs", exist_ok=True)
 
 with open(output_file, "w") as f:
     f.write("# 🤖 AI-Generated Notes\n\n")
-    f.write(f"_Generated on {datetime.datetime.utcnow().isoformat()} UTC_\n\n")
+    f.write(f"_Generated on {datetime.datetime.now(datetime.UTC).isoformat()}_\n\n")
 
     for filepath in rtl_files:
         try:
