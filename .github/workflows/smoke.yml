@@ -9,28 +9,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout repo with full history
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0   # full history so git diff works
+          fetch-depth: 0
 
+      # Install Python and dependencies
       - name: Install Python deps
         run: |
           python3 -m pip install --upgrade pip
           pip install openai
 
+      # Run AI Documentation Generator (all RTL files in rtl/)
       - name: Run AI Documentation Assistant
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python3 scripts/ai_doc_gen.py
+          python3 scripts/sdc/ai_doc_gen.py
 
+      # Run AI Log Summarizer (all .log files in logs/)
       - name: Run AI Log Summarizer
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python3 scripts/ai_log_summarizer.py
+          python3 scripts/sdc/ai_log_summarizer.py
 
+      # Commit and push AI-generated docs back
       - name: Commit AI-generated docs back
         if: github.ref == 'refs/heads/main'
         run: |

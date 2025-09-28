@@ -2,13 +2,11 @@
 """
 AI Log Summarizer for CDC IP Library
 ------------------------------------
-- Scans only log files changed vs origin/main.
-- Adds PASS/FAIL/INCONCLUSIVE verdicts before AI summary.
+- Summarizes *all* .log files in logs/ each run.
+- Adds PASS/FAIL/INCONCLUSIVE verdicts.
 """
 
-import os
-import subprocess
-import datetime
+import os, datetime
 from openai import OpenAI
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -16,15 +14,14 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 log_dir = "logs"
 output_file = "docs/log_summaries.md"
 
-# Compare against origin/main
-changed_logs = subprocess.getoutput(
-    f"git diff --name-only origin/main HEAD -- {log_dir}"
-).splitlines()
+if not os.path.exists(log_dir):
+    print("[AI Log Summarizer] No logs directory found. Skipping.")
+    exit(0)
 
-log_files = [f for f in changed_logs if f.endswith(".log") and os.path.exists(f)]
+log_files = [os.path.join(log_dir, f) for f in os.listdir(log_dir) if f.endswith(".log")]
 
 if not log_files:
-    print("[AI Log Summarizer] No new/changed logs detected. Skipping.")
+    print("[AI Log Summarizer] No .log files found. Skipping.")
     exit(0)
 
 os.makedirs("docs", exist_ok=True)
@@ -37,7 +34,7 @@ with open(output_file, "w") as out:
         with open(filepath) as f:
             log_content = f.read()
 
-        # Triage verdict
+        # Verdict
         if "FAILED" in log_content or "$error" in log_content:
             verdict = "❌ TEST FAILED"
         elif "Assertion" in log_content and "FAILED" in log_content:
@@ -45,25 +42,21 @@ with open(output_file, "w") as out:
         elif "Finished" in log_content or "$finish" in log_content:
             verdict = "✅ TEST PASSED (no assertion failures)"
         else:
-            verdict = "⚠️ INCONCLUSIVE (no clear PASS/FAIL markers)"
+            verdict = "⚠️ INCONCLUSIVE (no clear markers)"
 
-        # Extract important lines
-        important_lines = [
-            line for line in log_content.splitlines()
-            if ("assert" in line.lower()
-                or "failed" in line.lower()
-                or "error" in line.lower()
-                or "offending" in line.lower())
+        # Snippet
+        important = [
+            l for l in log_content.splitlines()
+            if any(k in l.lower() for k in ["assert", "fail", "error", "offending"])
         ]
-        snippet = "\n".join(important_lines[:1000]) if important_lines else log_content[:2000]
+        snippet = "\n".join(important[:1000]) if important else log_content[:2000]
 
         prompt = f"""You are an ASIC/FPGA verification engineer.
-Summarize this simulation log in plain English.
-Focus on:
-- Which assertions failed (if any)
+Summarize this log in plain English:
+- Which assertions failed
 - At what times
-- Likely reasons (timing, reset, CDC behavior)
-- Whether the test outcome matches expectations
+- Likely cause
+- Whether outcome matches expectations
 
 Verdict: {verdict}
 
@@ -80,8 +73,8 @@ Log snippet:
             )
             summary = response.choices[0].message.content.strip()
         except Exception as e:
-            summary = f"(⚠️ AI log summarization failed: {e})"
+            summary = f"(⚠️ Log summarization failed: {e})"
 
         out.write(f"## {os.path.basename(filepath)}\n\n**{verdict}**\n\n{summary}\n\n")
 
-print(f"[AI Log Summarizer] Wrote summaries for {len(log_files)} changed log(s) to {output_file}")
+print(f"[AI Log Summarizer] Wrote summaries for {len(log_files)} log(s) to {output_file}")
