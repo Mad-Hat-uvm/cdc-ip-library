@@ -1,3 +1,5 @@
+// touch: force recommit for AI doc gen
+
 `include "cdc_reset_sync.sv"
 `include "cdc_reset_sync_assert.sv"
 
