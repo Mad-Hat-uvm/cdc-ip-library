@@ -44,7 +44,7 @@ Here is the code:
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=1000,
+                max_tokens=3000,
                 temperature=0.3
             )
             summary = response.choices[0].message.content.strip()
