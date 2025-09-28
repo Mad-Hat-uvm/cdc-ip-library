@@ -1,4 +1,4 @@
-touch: force recommit for AI doc gen
+
 
 
 [2025-09-28 00:01:01 UTC] vcs -full64 -licqueue +incdir+$UVM_HOME/src $UVM_HOME/src/uvm.sv $UVM_HOME/src/dpi/uvm_dpi.cc -CFLAGS -DVCS +incdir+${SVAUNIT_HOME} +incdir+${SVAUNIT_HOME}/sv ${SVAUNIT_HOME}/sv/svaunit_pkg.sv ${SVAUNIT_HOME}/sv/svaunit_vpi_interface.sv '-timescale=1ns/1ns' '+vcs+flush+all' '+warn=all' '-sverilog' design.sv testbench.sv +vpi +dpi +acc -cm assert+line+cond+fsm+tgl+branch ${SVAUNIT_HOME}/sv/svaunit_vpi_api.cpp  && ./simv +vcs+lic+wait  
