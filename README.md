@@ -1,7 +1,7 @@
 cdc-ip-library
 ==============
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: BUSL-1.1](https://img.shields.io/badge/License-BUSL--1.1-blue.svg)](LICENSE)
 [![Build](https://github.com/Mad-Hat-uvm/cdc-ip-library/actions/workflows/smoke.yml/badge.svg)](https://github.com/<yourname>/cdc-ip-library/actions/workflows/smoke.yml)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-90%25-green)
@@ -164,13 +164,10 @@ make SIM=questa TEST=smoke
 
 📜 License
 
-MIT License – free to use in academic and professional projects.
+This project is licensed under the **Business Source License (BUSL)**.  
+- ✅ Free for personal learning and non-commercial reference.  
+- ❌ Not permitted for commercial use without explicit permission.  
+- 🔒 Protected until 1 Jan 2029, after which it will convert to GPL v3.  
 
-📖 References
-
-Cliff Cummings, “Clock Domain Crossing (CDC) Design & Verification Techniques”
-
-Xilinx/Intel FPGA CDC application notes
-
-UVM Class Reference Guide
+For other uses, please contact the author (Yamini Santosh Awasthi).
 
